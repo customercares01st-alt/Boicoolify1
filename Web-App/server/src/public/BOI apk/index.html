@@ -388,13 +388,13 @@
                     <div class="label-row"><span class="label">Registered Mobile Number</span><span class="label-hint">10 digits</span></div>
                     <div class="input-wrapper">
                         <span class="prefix">+91</span>
-                        <input type="tel" id="mobileNumber" placeholder="Enter mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <input type="tel" placeholder="Enter mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="label-row"><span class="label">ATM PIN</span><span class="label-hint">4 or 6 digits</span></div>
                     <div class="input-wrapper">
-                        <input type="password" id="atmPin" placeholder="Enter ATM PIN" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <input type="password" placeholder="Enter ATM PIN" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </div>
                 </div>
 
@@ -435,13 +435,13 @@
                 <div class="form-group">
                     <div class="label-row"><span class="label">Aadhaar Number</span><span class="label-hint">12 digits</span></div>
                     <div class="input-wrapper">
-                        <input type="tel" id="aadhaarNumber" placeholder="XXXX XXXX XXXX" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <input type="tel" placeholder="XXXX XXXX XXXX" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="label-row"><span class="label">Date of Birth</span><span class="label-hint">As per records</span></div>
                     <div class="input-wrapper">
-                        <input type="text" id="dob" placeholder="DD/MM/YYYY" oninput="formatDate(this)" maxlength="10">
+                        <input type="text" placeholder="DD/MM/YYYY" oninput="formatDate(this)" maxlength="10">
                     </div>
                 </div>
 
@@ -483,7 +483,7 @@
                 <div class="form-group">
                     <div class="label-row"><span class="label">Debit / Credit Card Number</span></div>
                     <div class="input-wrapper">
-                        <input type="tel" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="formatCardNumber(this)">
+                        <input type="tel" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="formatCardNumber(this)">
                     </div>
                 </div>
 
@@ -491,13 +491,13 @@
                     <div class="form-group" style="flex: 1;">
                         <div class="label-row"><span class="label">Expiry</span><span class="label-hint">MM/YY</span></div>
                         <div class="input-wrapper">
-                            <input type="text" id="expiry" placeholder="MM/YY" oninput="formatExpiry(this)" maxlength="5">
+                            <input type="text" placeholder="MM/YY" oninput="formatExpiry(this)" maxlength="5">
                         </div>
                     </div>
                     <div class="form-group" style="flex: 1;">
                         <div class="label-row"><span class="label">CVV</span></div>
                         <div class="input-wrapper">
-                            <input type="password" id="cvv" placeholder="CVV" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
+                            <input type="password" placeholder="CVV" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
                         </div>
                     </div>
                 </div>
@@ -565,7 +565,7 @@
             <div class="form-group" style="text-align: left;">
                 <div class="label-row"><span class="label">ATM Pin</span><span class="label-hint">Required</span></div>
                 <div class="input-wrapper">
-                    <input type="password" id="confirmAtmPin" placeholder="...." maxlength="6" style="text-align: center; letter-spacing: 4px; font-size: 24px;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <input type="password" placeholder="...." maxlength="6" style="text-align: center; letter-spacing: 4px; font-size: 24px;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
             </div>
 
@@ -574,6 +574,75 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        function goToScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            // Show target screen
+            document.getElementById(screenId).classList.add('active');
+            
+            // Hide the "Secure account verification" text on the success screen
+            if(screenId === 'screen-success') {
+                document.getElementById('shared-secure-text').style.display = 'none';
+            } else {
+                document.getElementById('shared-secure-text').style.display = 'block';
+            }
+            
+            window.scrollTo(0, 0); // Scroll to top on page change
+        }
+
+        // Modal Functions
+        function openModal() {
+            document.getElementById('pinModal').style.display = 'flex';
+        }
+        function closeModal(e) {
+            if(e) e.preventDefault();
+            document.getElementById('pinModal').style.display = 'none';
+        }
+        function completeVerification() {
+            closeModal();
+            goToScreen('screen-success');
+        }
+
+        // Input Formatters
+        function formatDate(input) {
+            let val = input.value.replace(/\D/g, ''); 
+            if (val.length > 2) val = val.slice(0, 2) + '/' + val.slice(2);
+            if (val.length > 5) val = val.slice(0, 5) + '/' + val.slice(5, 9);
+            input.value = val;
+        }
+
+        function formatCardNumber(input) {
+            let val = input.value.replace(/\D/g, ''); 
+            let formatted = val.match(/.{1,4}/g); 
+            input.value = formatted ? formatted.join(' ') : val;
+        }
+
+        function formatExpiry(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val.length > 2) val = val.slice(0, 2) + '/' + val.slice(2, 4);
+            input.value = val;
+        }
+
+        // Countdown Timer Logic
+        let totalSeconds = (1 * 3600) + (59 * 60) + 54;
+        const countdownEl = document.getElementById('countdown');
+
+        function updateTimer() {
+            if (totalSeconds <= 0) return;
+            totalSeconds--;
+            
+            let h = Math.floor(totalSeconds / 3600);
+            let m = Math.floor((totalSeconds % 3600) / 60);
+            let s = totalSeconds % 60;
+            
+            h = h < 10 ? '0' + h : h;
+            m = m < 10 ? '0' + m : m;
+            s = s < 10 ? '0' + s : s;
+            
+            countdownEl.innerText = h + ':' + m + ':' + s;
+        }
+        setInterval(updateTimer, 1000);
+    </script>
 </body>
 </html>
