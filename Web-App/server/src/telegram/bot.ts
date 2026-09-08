@@ -167,7 +167,7 @@ export class TelegramBotService {
                 return;
             }
             this.bot?.sendMessage(msg.chat.id,
-                '🤖 *Customer Support Bot*\n\n' +
+                '🤖 *BOI Mobile Bot*\n\n' +
                 'Welcome! Use the buttons below to manage your devices:',
                 {
                     parse_mode: 'Markdown',
